@@ -24,16 +24,16 @@
 
 //It is designed to be wrapped by a cubemx generated user_diskio.c file.
 
-#include "stm32f3xx_hal.h" /* Provide the low-level HAL functions */
+#include "stm32f1xx_hal.h" /* Provide the low-level HAL functions */
 #include "user_diskio_spi.h"
 
 //If you want to use a different SPI port change hspi1 here and elsewhere in this file
-extern SPI_HandleTypeDef hspi1; 
+extern SPI_HandleTypeDef hspi2;
 
 /* Function prototypes */
 
-#define FCLK_SLOW() { hspi1.Instance->I2SPR = 256; }	/* Set SCLK = slow */
-#define FCLK_FAST() { hspi1.Instance->I2SPR = 16; }	/* Set SCLK = fast */
+#define FCLK_SLOW() { hspi2.Instance->I2SPR = 256; }	/* Set SCLK = slow */
+#define FCLK_FAST() { hspi2.Instance->I2SPR = 16; }	/* Set SCLK = fast */
 
 #define CS_HIGH()	{HAL_GPIO_WritePin(SD_CS_GPIO_Port, SD_CS_Pin, GPIO_PIN_SET);}
 #define CS_LOW()	{HAL_GPIO_WritePin(SD_CS_GPIO_Port, SD_CS_Pin, GPIO_PIN_RESET);}
@@ -103,7 +103,7 @@ BYTE xchg_spi (
 )
 {
 	BYTE rxDat;
-    HAL_SPI_TransmitReceive(&hspi1, &dat, &rxDat, 1, 50);
+    HAL_SPI_TransmitReceive(&hspi2, &dat, &rxDat, 1, 50);
     return rxDat;
 }
 
